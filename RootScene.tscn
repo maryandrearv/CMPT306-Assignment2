@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dabxsj2p6iwqu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vmvvx"]
+font_size = 24
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 808.0
+offset_top = 8.0
+offset_right = 1141.0
+offset_bottom = 42.0
+text = "Mary Vargas | NSID:  mrv197"
+label_settings = SubResource("LabelSettings_vmvvx")
