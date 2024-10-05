@@ -1,14 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://dabxsj2p6iwqu"]
+[gd_scene load_steps=3 format=3 uid="uid://dabxsj2p6iwqu"]
+
+[ext_resource type="PackedScene" uid="uid://81crqbcmkb6p" path="res://player.tscn" id="1_k4lqd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vmvvx"]
 font_size = 24
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Label" type="Label" parent="."]
-offset_left = 808.0
-offset_top = 8.0
-offset_right = 1141.0
-offset_bottom = 42.0
+[node name="NSID" type="Label" parent="."]
+offset_left = 912.0
+offset_top = 16.0
+offset_right = 1245.0
+offset_bottom = 50.0
 text = "Mary Vargas | NSID:  mrv197"
 label_settings = SubResource("LabelSettings_vmvvx")
+
+[node name="Player" parent="." instance=ExtResource("1_k4lqd")]
+position = Vector2(672, 344)
