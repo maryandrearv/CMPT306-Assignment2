@@ -7,7 +7,9 @@ var friction = 0.05  # Slow down over time when not thrusting
 @onready var left_thruster = $LeftThruster
 @onready var right_thruster = $RightThruster
 @onready var anim = $AnimationPlayer
+@onready var bullet_scene = preload("res://Bullet.tscn")  # Preload the bullet scene
 
+# _process handles input for ship rotation and movement
 func _process(delta):
 	# Handle Rotation
 	if Input.is_action_pressed("ui_right"):
@@ -38,3 +40,23 @@ func _process(delta):
 
 	# Apply movement using CharacterBody2D's velocity with move_and_slide
 	move_and_slide()
+
+# _input handles firing the bullet
+func _input(event):
+	if event.is_action_pressed("shoot"):
+		fire_bullet()
+
+# fire_bullet handles the instantiation of a bullet and sets its position and direction
+func fire_bullet():
+	var bullet = bullet_scene.instantiate()  # Instance a new bullet
+	# Offset the bullet to fire from the front of the ship (based on its rotation)
+	var front_offset = Vector2(40, 0).rotated(rotation)  # Adjust the 40 value as needed
+	bullet.position = position + front_offset  # Set the bullet's position at the front of the ship
+	bullet.rotation = rotation  # Set the bullet's rotation to match the player's rotation
+	
+	# Calculate the direction for the bullet based on player's rotation
+	var bullet_direction = Vector2(cos(rotation), sin(rotation))
+	bullet.set_direction(bullet_direction)
+	
+	# Add the bullet to the parent scene
+	get_parent().add_child(bullet)
