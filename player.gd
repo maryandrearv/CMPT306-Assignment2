@@ -1,16 +1,27 @@
 extends CharacterBody2D
 
+signal bullet_shot(bullet)
+
 var rotation_speed = 3.0  # How fast the ship rotates
 var movement_speed = 400.0  # How fast the ship moves forward/backward
+
 var friction = 0.05  # Slow down over time when not thrusting
+
+var shoot_cd = false
+var rate_of_fire = 0.15
+
 
 @onready var left_thruster = $LeftThruster
 @onready var right_thruster = $RightThruster
 @onready var anim = $AnimationPlayer
 @onready var bullet_scene = preload("res://Bullet.tscn")  # Preload the bullet scene
 
+@onready var muzzle = $Muzzle
+
+
+
 # _process handles input for ship rotation and movement
-func _process(delta):
+func _physics_process(delta):
 	# Handle Rotation
 	if Input.is_action_pressed("ui_right"):
 		rotation += rotation_speed * delta
@@ -42,21 +53,18 @@ func _process(delta):
 	move_and_slide()
 
 # _input handles firing the bullet
-func _input(event):
-	if event.is_action_pressed("shoot"):
-		fire_bullet()
+func _process(delta):
+	if Input.is_action_pressed("shoot"):
+		if !shoot_cd:
+			shoot_cd = true
+			fire_bullet()
+			await get_tree().create_timer(rate_of_fire).timeout
+			shoot_cd = false
 
-# fire_bullet handles the instantiation of a bullet and sets its position and direction
+ # fire_bullet handles the instantiation of a bullet and sets its position and direction
 func fire_bullet():
 	var bullet = bullet_scene.instantiate()  # Instance a new bullet
-	# Offset the bullet to fire from the front of the ship (based on its rotation)
-	var front_offset = Vector2(40, 0).rotated(rotation)  # Adjust the 40 value as needed
-	bullet.position = position + front_offset  # Set the bullet's position at the front of the ship
+	bullet.global_position = muzzle.global_position
 	bullet.rotation = rotation  # Set the bullet's rotation to match the player's rotation
+	emit_signal("bullet_shot", bullet)
 	
-	# Calculate the direction for the bullet based on player's rotation
-	var bullet_direction = Vector2(cos(rotation), sin(rotation))
-	bullet.set_direction(bullet_direction)
-	
-	# Add the bullet to the parent scene
-	get_parent().add_child(bullet)

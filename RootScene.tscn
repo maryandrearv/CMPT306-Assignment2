@@ -1,13 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://dabxsj2p6iwqu"]
+[gd_scene load_steps=5 format=3 uid="uid://dabxsj2p6iwqu"]
 
 [ext_resource type="PackedScene" uid="uid://81crqbcmkb6p" path="res://player.tscn" id="1_k4lqd"]
-[ext_resource type="PackedScene" uid="uid://dbgx2p0d75t5y" path="res://bullet.tscn" id="3_5w3u1"]
+[ext_resource type="Script" path="res://game.gd" id="1_nysmb"]
+[ext_resource type="PackedScene" uid="uid://cmyxgyg8ihlpm" path="res://asteroid.tscn" id="3_0fe1p"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vmvvx"]
 font_size = 24
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(656, 336)
+script = ExtResource("1_nysmb")
 
 [node name="NSID" type="Label" parent="."]
 offset_left = 96.0
@@ -20,6 +22,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Player" parent="." instance=ExtResource("1_k4lqd")]
 
-[node name="Bullet" parent="." instance=ExtResource("3_5w3u1")]
-position = Vector2(1.81899e-12, -40)
-rotation = 6.28507
+[node name="Bullets" type="Node" parent="."]
+
+[node name="Asteroid" parent="." instance=ExtResource("3_0fe1p")]
+position = Vector2(-136, -8)

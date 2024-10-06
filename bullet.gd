@@ -1,16 +1,17 @@
 extends Area2D
 
-var speed = 400.0  # Bullet speed
-var direction = Vector2()  # Bullet's movement direction
+@export var speed := 500.0
 
-func _ready():
-	# Automatically delete the bullet after 2 seconds
-	await get_tree().create_timer(2.0).timeout
-	queue_free()
+var movement_vector := Vector2(0, -1)
 
 func _physics_process(delta):
-	# Move the bullet forward
-	position += direction * speed * delta
+	global_position += movement_vector.rotated(rotation) * speed * delta
 
-func set_direction(new_direction: Vector2):
-	direction = new_direction
+func _on_visible_on_screen_notifier_2d_screen_exited():
+	queue_free()
+
+#func _on_area_entered(area):
+	#if area is Asteroid:
+		#var asteroid = area
+		#asteroid.explode()
+		#queue_free()
