@@ -1,6 +1,7 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
 
 signal bullet_shot(bullet)
+signal died
 
 var rotation_speed = 3.0  # How fast the ship rotates
 var movement_speed = 400.0  # How fast the ship moves forward/backward
@@ -10,6 +11,7 @@ var friction = 0.05  # Slow down over time when not thrusting
 var shoot_cd = false
 var rate_of_fire = 0.15
 
+var alive := true
 
 @onready var left_thruster = $LeftThruster
 @onready var right_thruster = $RightThruster
@@ -17,7 +19,6 @@ var rate_of_fire = 0.15
 @onready var bullet_scene = preload("res://Bullet.tscn")  # Preload the bullet scene
 
 @onready var muzzle = $Muzzle
-
 
 
 # _process handles input for ship rotation and movement
@@ -68,3 +69,11 @@ func fire_bullet():
 	bullet.rotation = rotation  # Set the bullet's rotation to match the player's rotation
 	emit_signal("bullet_shot", bullet)
 	
+func die():
+	#pass
+	if alive==true:
+		alive = false
+		#sprite.visible = false
+		#cshape.set_deferred("disabled", true)
+		emit_signal("died")
+		queue_free()

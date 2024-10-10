@@ -56,7 +56,11 @@ func _physics_process(delta):
 	elif (global_position.x-radius) > screen_size.x:
 		global_position.x = -radius
 	
-	
 func explode():
 	emit_signal("exploded", global_position, size, points)
 	queue_free()
+
+func _on_body_entered(body):
+	if body is Player:
+		var player = body
+		player.die()

@@ -12,10 +12,15 @@ var score := 0:
 		score = value
 		hud.score = score
 
+var lives = 3
+
+
 func _ready():
 	score = 0
+	lives = 3
 	# Connect the "bullet_shot" signal from the player to the _on_bullet_shot function
 	player.connect("bullet_shot", Callable(self, "_on_bullet_shot"))
+	player.connect("died", Callable(self, "_on_player_died"))
 	
 	for asteroid in asteroids.get_children():
 		asteroid.connect("exploded", _on_asteroid_exploded)
@@ -43,3 +48,9 @@ func spawn_asteroid(pos, size):
 	a.size = size
 	a.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", a)
+
+func _on_player_died():
+	lives -= 1
+	if lives <= 0:
+		get_tree().reload_current_scene()
+	print(lives)
